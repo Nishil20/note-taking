@@ -2,10 +2,10 @@
   "name": "server",
   "version": "1.0.0",
   "main": "dist/server.js",
-  "type": "module",
   "scripts": {
     "start": "node dist/server.js",
-    "dev": "ts-node-dev --esm src/server.ts",
+    "dev": "ts-node-dev src/server.ts",
+    "dev:js": "node js-server.js",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

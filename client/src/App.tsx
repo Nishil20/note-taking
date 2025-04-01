@@ -1,43 +1,50 @@
 import { useState } from 'react'
+import { AuthProvider, useAuth } from './contexts/AuthContext'
+import AuthPage from './components/auth/AuthPage'
 import { Button } from './components/ui/button'
 
-function App() {
-  const [count, setCount] = useState(0)
+function AppContent() {
+  const { user, isAuthenticated, logout } = useAuth()
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-background">
-      <div className="max-w-md w-full space-y-8">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-primary">NoteTaker</h1>
-          <p className="mt-2 text-muted-foreground">
-            A simple note-taking application
-          </p>
-        </div>
-        
-        <div className="mt-8 flex flex-col items-center">
-          <p className="mb-4">Button component example:</p>
-          <div className="flex gap-2">
-            <Button variant="default" onClick={() => setCount((count) => count + 1)}>
-              Count is {count}
-            </Button>
-            <Button variant="outline">Outline</Button>
-            <Button variant="secondary">Secondary</Button>
-          </div>
-          <div className="mt-4 flex gap-2">
-            <Button variant="destructive">Destructive</Button>
-            <Button variant="ghost">Ghost</Button>
-            <Button variant="link">Link</Button>
-          </div>
-        </div>
+    <div className="min-h-screen bg-background">
+      {!isAuthenticated ? (
+        <AuthPage />
+      ) : (
+        <div className="container mx-auto px-4 py-8">
+          <header className="flex justify-between items-center mb-8 pb-4 border-b">
+            <h1 className="text-3xl font-bold text-primary">NoteTaker</h1>
+            <div className="flex items-center gap-4">
+              <span className="text-muted-foreground">
+                Welcome, {user?.username}
+              </span>
+              <Button variant="outline" onClick={logout}>Logout</Button>
+            </div>
+          </header>
 
-        <div className="mt-8 p-4 border rounded-lg bg-card text-card-foreground">
-          <h2 className="text-lg font-semibold">🎉 Project setup complete!</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            React + Tailwind CSS + shadcn/ui is ready to go. Next step is setting up the Express backend.
-          </p>
+          <main>
+            <div className="p-8 text-center bg-card rounded-lg shadow-sm border">
+              <h2 className="text-2xl font-semibold mb-4">Welcome to NoteTaker!</h2>
+              <p className="mb-6 text-muted-foreground">
+                You've successfully logged in. Notes functionality will be implemented in the next task.
+              </p>
+              <div className="flex justify-center space-x-4">
+                <Button variant="default">Create Note</Button>
+                <Button variant="secondary">View All Notes</Button>
+              </div>
+            </div>
+          </main>
         </div>
-      </div>
+      )}
     </div>
+  )
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   )
 }
 
