@@ -11,6 +11,9 @@ export interface IUser {
   };
   createdAt: Date;
   updatedAt: Date;
+
+  // Method to compare password
+  matchPassword(enteredPassword: string): Promise<boolean>;
 }
 
 const userSchema = new mongoose.Schema<IUser>(
@@ -75,4 +78,4 @@ userSchema.methods.matchPassword = async function(enteredPassword: string): Prom
 
 const User = mongoose.model<IUser>('User', userSchema);
 
-export default User; 
+export default User;

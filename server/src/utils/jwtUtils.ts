@@ -1,4 +1,5 @@
-import jwt from 'jsonwebtoken';
+// Using require instead of import to avoid TypeScript issues
+const jwt = require('jsonwebtoken');
 import { Types } from 'mongoose';
 
 // Get JWT secret from environment variables
@@ -30,12 +31,9 @@ export const generateToken = (
     email
   };
 
-  // Using jwt.sign with the correct type for secret
-  return jwt.sign(
-    payload, 
-    JWT_SECRET as jwt.Secret, 
-    { expiresIn: JWT_EXPIRE }
-  );
+  return jwt.sign(payload, JWT_SECRET, {
+    expiresIn: JWT_EXPIRE
+  });
 };
 
 /**
@@ -45,7 +43,7 @@ export const generateToken = (
  */
 export const verifyToken = (token: string): TokenPayload | null => {
   try {
-    return jwt.verify(token, JWT_SECRET as jwt.Secret) as TokenPayload;
+    return jwt.verify(token, JWT_SECRET) as TokenPayload;
   } catch (error) {
     return null;
   }
@@ -62,4 +60,4 @@ export const extractTokenFromHeader = (authHeader: string | undefined): string |
   }
   
   return authHeader.split(' ')[1];
-}; 
+};
