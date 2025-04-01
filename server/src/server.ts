@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { errorHandler } from './middleware/errorHandler';
 import authRoutes from './routes/authRoutes';
+import noteRoutes from './routes/noteRoutes';
 
 // Load environment variables
 dotenv.config();
@@ -37,8 +38,8 @@ app.get('/api/health', (req, res) => {
 
 // API Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/notes', noteRoutes);
 // Future routes
-// app.use('/api/notes', noteRoutes);
 // app.use('/api/tags', tagRoutes);
 
 // Error handling middleware
