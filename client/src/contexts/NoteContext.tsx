@@ -5,6 +5,8 @@ interface NoteContextType {
   notes: Note[];
   isLoading: boolean;
   error: string | null;
+  selectedNote: Note | null;
+  setSelectedNote: (note: Note | null) => void;
   loadNotes: () => Promise<void>;
   getNote: (id: string) => Promise<Note>;
   createNote: (data: CreateNoteData) => Promise<Note>;
@@ -34,6 +36,7 @@ type ApiError = {
 
 export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
   const [notes, setNotes] = useState<Note[]>([]);
+  const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -148,8 +151,15 @@ export const NoteProvider: React.FC<NoteProviderProps> = ({ children }) => {
     console.log('Notes state updated:', notes);
   }, [notes]);
 
+  // Load notes when the provider mounts
+  React.useEffect(() => {
+    loadNotes();
+  }, [loadNotes]);
+
   const value = {
     notes,
+    selectedNote,
+    setSelectedNote,
     isLoading,
     error,
     loadNotes,
